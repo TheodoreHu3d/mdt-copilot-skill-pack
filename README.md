@@ -61,6 +61,6 @@ flowchart TD
 ## 安装
 
 ```
-Install mdt-copilot-skill-pack from GitHub - TheodoreHu3d/mdt-copilot-skill-pack
-Install OpenClaw-Medical-Skills from GitHub - your-org/OpenClaw-Medical-Skills
+Install mdt-copilot-skill-pack from https://github.com/TheodoreHu3d/mdt-copilot-skill-pack
+Install OpenClaw-Medical-Skills from https://github.com/your-org/OpenClaw-Medical-Skills
 ```
