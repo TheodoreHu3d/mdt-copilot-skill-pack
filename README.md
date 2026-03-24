@@ -70,40 +70,26 @@ flowchart TD
    cp -r OpenClaw-Medical-Skills/skills/* ~/.openclaw/skills/
    ```
 
-### 方式一：OpenClaw 自动安装（推荐）
+### 从 GitHub 安装
 
-如果你已安装 `openclaw` CLI 工具，可以直接运行：
+1. 克隆本仓库到本地：
+   ```bash
+   git clone https://github.com/TheodoreHu3d/mdt-copilot-skill-pack.git
+   ```
 
-```bash
-openclaw skills install mdt-copilot-skill-pack
-```
+2. 复制技能到 OpenClaw：
+   ```bash
+   cp -r mdt-copilot-skill-pack/skills/* ~/.openclaw/skills/
+   ```
 
-或指定本地路径：
+   或复制到某个 workspace 的 `skills/` 目录。
 
-```bash
-openclaw skills install ./mdt-copilot-skill-pack
-```
+3. 重启 OpenClaw Gateway 使新技能生效：
+   ```bash
+   sh ~/.openclaw/scripts/restart.sh
+   ```
 
-### 方式二：手动复制
-
-将本包的 `skills/` 下目录复制到 OpenClaw 的 `skills/` 目录中：
-
-```bash
-cp -r skills/* ~/.openclaw/skills/
-```
-
-或复制到某个 workspace 的 `skills/` 目录。
-
-### 重启生效
-
-安装完成后，重启 OpenClaw Gateway 使新技能生效：
-
-```bash
-sh ~/.openclaw/scripts/restart.sh
-```
-
-或使用 CLI：
-
-```bash
-openclaw gateway restart
-```
+   或使用 CLI：
+   ```bash
+   openclaw gateway restart
+   ```
