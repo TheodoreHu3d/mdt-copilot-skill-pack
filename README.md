@@ -1,183 +1,103 @@
 # MDT Copilot Skill Pack
 
-面向飞书生态 + OpenClaw 的 MDT（多学科会诊）辅助技能包。  
-用于在真实临床 MDT 场景中，完成 会前准备 → 会中记录 → 会末补充 → 会后小结 的完整闭环。
+MDT Copilot 是面向 OpenClaw + 飞书生态的多学科会诊（MDT）辅助技能包，用于支持真实临床场景下的会前准备、会中整理、会末补充和会后小结输出。
 
-本技能包设计目标：
+本技能包用于在不改变现有 MDT 工作流程的前提下，提供结构化文档生成与临床决策支持能力。
 
-- 不替代医生决策  
-- 不改变临床讨论流程  
-- 不污染 clinical_decision_support 的原始能力  
-- 只负责整理、承接、记录、输出  
+适用场景：
 
-适用于：
-
-- 肿瘤 MDT  
-- 泛癌种 MDT  
-- 复杂病例讨论  
-- 临床试验讨论  
-- 二次意见讨论  
-- 多中心会诊  
-
-运行环境：
-
-- OpenClaw  
-- 飞书机器人 / 飞书文档生态  
-- OpenClaw-Medical-Skills  
+- 肿瘤 MDT
+- 泛癌种病例讨论
+- 复杂病例会诊
+- 临床试验讨论
+- 二次意见讨论
+- 多中心会诊
 
 
 ---
 
-# 一、设计原则
+# 一、整体流程
 
-
-## 1. 会前建议必须来自 clinical_decision_support
-
-第二份会前文档必须直接调用：
-
-integration_clinical_decision_support
-
-禁止：
-
-- 模板改写  
-- 风格重排  
-- 推荐重组  
-- 摘要压缩  
-
-允许：
-
-- 原文直出  
-- 附录补充  
-
-
----
-
-## 2. 会后小结必须符合医院真实纪要格式
-
-MDT 小结必须按真实医院文书结构输出：
-
-MDT 小结
-
-患者信息
-
-一、病史回顾及诊断  
-二、后续诊疗计划  
-三、注意事项与预后  
-四、参考文献  
-
-记录人
-
-
----
-
-## 3. 飞书文档是唯一输出介质
-
-所有文档必须写入飞书文档：
-
-- MDT病例资料  
-- AI临床决策支持报告  
-- MDT小结  
-- Mermaid流程图  
-
-
----
-
-## 4. Mermaid 是唯一流程图格式
-
-必须使用 Mermaid fenced code block，例如：
-
-```mermaid
-flowchart TD
-A --> B
-```
-
-不能使用：
-
-- plaintext  
-- svg  
-- 图片  
-- HTML  
-
-
----
-
-# 二、整体工作流
-
-MDT Copilot 支持完整 MDT 生命周期：
+MDT Copilot 支持完整 MDT 工作流程：
 
 会前 → 会中 → 会末 → 会后
 
 | 阶段 | 命令 | 输出 |
 |------|------|------|
-| 会前 | /mdt_prep | 病例资料 + CDS报告 |
-| 会中 | /mdt_listen | 结构化讨论记录 |
+| 会前 | /mdt_prep | 病例资料 + 临床决策支持报告 |
+| 会中 | /mdt_listen | 会议记录整理 |
 | 会末 | /mdt_comment | AI补充意见 |
 | 会后 | /mdt_summary | MDT小结 |
 
 
 ---
 
-# 三、命令说明
+# 二、命令说明
 
 
 ## /mdt_prep
 
 生成两份会前文档
 
-
 ### 文档1：MDT病例资料
 
-来源：
+根据上传的病例资料整理生成结构化病例文档，包括：
 
-core_intake  
-→ template_mdt_case_doc  
-→ mermaid_flowchart_generator  
-→ feishu_doc_writer  
+- 基本信息
+- 既往诊疗经过
+- 检查结果
+- 病理结果
+- 分期
+- 当前问题
+- 诊疗流程图
+
+该文档写入飞书文档。
 
 
 ### 文档2：AI临床决策支持报告
 
-来源：
+基于病例资料调用 clinical_decision_support 生成完整临床决策支持报告。
 
-core_reasoner  
-→ integration_clinical_decision_support  
-→ feishu_doc_writer  
-
-规则：
-
-- 必须直接输出 CDS  
-- 不允许改写  
-- 不允许重排  
-- 不允许摘要  
+报告内容直接来自 clinical_decision_support，用于 MDT 会前参考。
 
 
 ---
 
 ## /mdt_listen
 
-会中记录
+整理会议讨论记录。
 
-core_meeting_listener
+输入内容为会议文字记录或讨论纪要文本，系统将其整理为结构化讨论记录，包括：
+
+- 主要讨论问题
+- 不同观点
+- 推荐方案
+- 证据依据
+- 风险与注意事项
 
 
 ---
 
 ## /mdt_comment
 
-会末 AI 发言
+在 MDT 讨论结束前生成 AI 补充意见。
 
-core_final_comment
+输入内容包括：
+
+- 病例资料
+- 临床决策支持报告
+- 会议记录
+
+输出为独立的 AI 建议文档，用于 MDT 讨论参考。
 
 
 ---
 
 ## /mdt_summary
 
-生成 MDT 小结
+生成 MDT 小结。
 
-core_summary_writer
-
-固定结构：
+小结按标准 MDT 纪要格式输出：
 
 MDT 小结
 
@@ -196,6 +116,22 @@ MDT 小结
 四、参考文献  
 
 记录人  
+
+该文档写入飞书文档。
+
+
+---
+
+# 三、文档输出
+
+所有文档均写入飞书文档，包括：
+
+- MDT病例资料
+- AI临床决策支持报告
+- MDT小结
+- 流程图
+
+流程图使用 Mermaid 语法生成，可在飞书文档中直接渲染。
 
 
 ---
@@ -222,14 +158,11 @@ mermaid_flowchart_generator
 
 # 五、依赖
 
-必须先安装：
-
-OpenClaw-Medical-Skills
+需要先安装 OpenClaw-Medical-Skills
 
 https://github.com/FreedomIntelligence/OpenClaw-Medical-Skills
 
-
-依赖技能：
+依赖技能包括：
 
 clinical-decision-support  
 guideline_search  
@@ -258,7 +191,7 @@ https://github.com/TheodoreHu3d/mdt-copilot-skill-pack
 ## 3 重启 OpenClaw
 
 
-## 4 测试
+## 4 测试命令
 
 /mdt_prep  
 /mdt_listen  
@@ -268,34 +201,16 @@ https://github.com/TheodoreHu3d/mdt-copilot-skill-pack
 
 ---
 
-# 七、推荐流程
+# 七、推荐使用流程
 
 上传病例  
 → /mdt_prep  
 
-开会  
+上传会议记录  
 → /mdt_listen  
 
-会末  
+生成补充意见  
 → /mdt_comment  
 
-会后  
-→ /mdt_summary  
-
-
----
-
-# 八、设计目标
-
-本技能包不是 AI 会诊系统
-
-而是
-
-MDT 工作流操作系统
-
-- 不替医生思考  
-- 不替医生决策  
-- 不改变流程  
-- 只做结构化支持  
-
-适用于真实医院环境
+生成小结  
+→ /mdt_summary
