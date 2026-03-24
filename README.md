@@ -60,36 +60,10 @@ flowchart TD
 
 ## 安装
 
-### 前置依赖
+Install from GitHub:
 
-本技能包依赖以下 OpenClaw 技能，请先安装：
+```
+Install mdt-copilot-skill-pack from GitHub - TheodoreHu3d/mdt-copilot-skill-pack
+```
 
-1. **OpenClaw-Medical-Skills**（提供 `clinical_decision_support` 能力）
-   ```bash
-   git clone https://github.com/your-org/OpenClaw-Medical-Skills.git
-   cp -r OpenClaw-Medical-Skills/skills/* ~/.openclaw/skills/
-   ```
-
-### 从 GitHub 安装
-
-1. 克隆本仓库到本地：
-   ```bash
-   git clone https://github.com/TheodoreHu3d/mdt-copilot-skill-pack.git
-   ```
-
-2. 复制技能到 OpenClaw：
-   ```bash
-   cp -r mdt-copilot-skill-pack/skills/* ~/.openclaw/skills/
-   ```
-
-   或复制到某个 workspace 的 `skills/` 目录。
-
-3. 重启 OpenClaw Gateway 使新技能生效：
-   ```bash
-   sh ~/.openclaw/scripts/restart.sh
-   ```
-
-   或使用 CLI：
-   ```bash
-   openclaw gateway restart
-   ```
+> **注意**：本技能包依赖 `clinical_decision_support` 能力，请确保已安装 OpenClaw-Medical-Skills。
