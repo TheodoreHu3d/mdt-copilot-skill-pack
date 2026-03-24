@@ -60,10 +60,50 @@ flowchart TD
 
 ## 安装
 
-将 `skills/` 下目录复制到 OpenClaw 的 `skills/` 目录中。
+### 前置依赖
+
+本技能包依赖以下 OpenClaw 技能，请先安装：
+
+1. **OpenClaw-Medical-Skills**（提供 `clinical_decision_support` 能力）
+   ```bash
+   git clone https://github.com/your-org/OpenClaw-Medical-Skills.git
+   cp -r OpenClaw-Medical-Skills/skills/* ~/.openclaw/skills/
+   ```
+
+### 方式一：OpenClaw 自动安装（推荐）
+
+如果你已安装 `openclaw` CLI 工具，可以直接运行：
+
+```bash
+openclaw skills install mdt-copilot-skill-pack
+```
+
+或指定本地路径：
+
+```bash
+openclaw skills install ./mdt-copilot-skill-pack
+```
+
+### 方式二：手动复制
+
+将本包的 `skills/` 下目录复制到 OpenClaw 的 `skills/` 目录中：
 
 ```bash
 cp -r skills/* ~/.openclaw/skills/
 ```
 
 或复制到某个 workspace 的 `skills/` 目录。
+
+### 重启生效
+
+安装完成后，重启 OpenClaw Gateway 使新技能生效：
+
+```bash
+sh ~/.openclaw/scripts/restart.sh
+```
+
+或使用 CLI：
+
+```bash
+openclaw gateway restart
+```
